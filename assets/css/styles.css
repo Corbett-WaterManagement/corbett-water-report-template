@@ -212,7 +212,6 @@ p {
 
 .masthead {
   background: #ffffff;
-  border-bottom: 1px solid var(--rule);
 }
 
 .masthead__inner {
@@ -223,6 +222,8 @@ p {
   justify-content: space-between;
 
   gap: 20px;
+
+  border-bottom: 1px solid var(--rule);
 }
 
 .masthead__brand {
@@ -284,19 +285,19 @@ p {
 }
 
 .hero__location {
-  margin-top: 14px;
+  margin-top: 16px;
   margin-bottom: 0;
 
   color: var(--secondary);
 
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 400;
 }
 
 .hero__description {
   max-width: 680px;
 
-  margin-top: 18px;
+  margin-top: 16px;
   margin-bottom: 0;
 
   color: var(--ink);
@@ -305,13 +306,13 @@ p {
 }
 
 .hero__test-note {
-  margin-top: 14px;
+  margin-top: 12px;
   margin-bottom: 0;
 
   color: var(--test);
 
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 400;
 }
 
 .hero__media {
@@ -338,7 +339,7 @@ p {
   position: absolute;
   inset: auto 0 0 0;
 
-  padding: 34px 15px 12px;
+  padding: 24px 20px 16px;
 
   color: #ffffff;
 
@@ -350,9 +351,9 @@ p {
     );
 
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 400;
 
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
@@ -597,7 +598,9 @@ p {
 .chart-section {
   margin-top: 50px;
   margin-bottom: 56px;
+}
 
+.chart-section > .report-wrapper {
   padding-top: 32px;
 
   border-top: 1px solid var(--rule);
@@ -647,7 +650,7 @@ p {
 
   padding: 11px 14px;
 
-  color: var(--heading);
+  color: var(--secondary);
   background: transparent;
 
   border: 0;
@@ -680,9 +683,9 @@ p {
 
   align-items: center;
 
-  gap: 20px;
+  gap: 24px;
 
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 
   color: var(--secondary);
 
@@ -703,6 +706,8 @@ p {
   flex: 0 0 auto;
 
   background: var(--blue);
+
+  border-radius: 2px;
 }
 
 .chart-legend__line {
@@ -738,7 +743,7 @@ p {
   display: block;
 
   width: 100%;
-  height: auto;
+  height: 340px;
 
   overflow: visible;
 }
@@ -757,7 +762,7 @@ p {
     Arial,
     sans-serif;
 
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .chart-axis-title {
@@ -774,7 +779,7 @@ p {
 }
 
 .chart-month-label.is-selected {
-  fill: var(--ink);
+  fill: var(--heading);
 
   font-weight: 700;
 }
@@ -782,7 +787,7 @@ p {
 .chart-test-label {
   fill: var(--test);
 
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
 }
 
@@ -826,7 +831,8 @@ p {
   position: absolute;
   z-index: 20;
 
-  max-width: 260px;
+  width: max-content;
+  max-width: min(260px, calc(100% - 16px));
 
   padding: 14px 17px;
 
@@ -1028,11 +1034,9 @@ p {
    ========================================================= */
 
 .report-footer {
-  padding: 24px 0;
+  padding: 0 0 24px;
 
   background: #ffffff;
-
-  border-top: 1px solid var(--rule);
 }
 
 .report-footer__inner {
@@ -1041,6 +1045,10 @@ p {
   justify-content: space-between;
 
   gap: 24px;
+
+  padding-top: 24px;
+
+  border-top: 1px solid var(--rule);
 }
 
 .report-footer__brand {
@@ -1066,7 +1074,7 @@ p {
   color: var(--heading);
 
   font-size: 15px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .report-footer__period {
@@ -1077,7 +1085,7 @@ p {
   font-size: 13px;
 }
 
-.report-footer__period.is-test {
+.report-footer__test {
   color: var(--test);
   font-weight: 700;
 }
@@ -1201,8 +1209,23 @@ p {
     object-position: center 52%;
   }
 
+  #report-eyebrow {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+  }
+
+  .hero__location {
+    margin-top: 16px;
+  }
+
   .hero__description {
+    margin-top: 10px;
+
     font-size: 17px;
+  }
+
+  .hero__test-note {
+    margin-top: 8px;
   }
 
   .section-heading-row {
@@ -1250,7 +1273,9 @@ p {
   .chart-section {
     margin-top: 32px;
     margin-bottom: 36px;
+  }
 
+  .chart-section > .report-wrapper {
     padding-top: 26px;
   }
 
@@ -1285,6 +1310,10 @@ p {
     min-height: 300px;
   }
 
+  .report-chart svg {
+    height: 300px;
+  }
+
   .chart-axis-text {
     font-size: 12px;
   }
@@ -1306,10 +1335,17 @@ p {
     gap: 8px;
   }
 
+  .weather-reference {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+
   .weather-reference__grid {
     grid-template-columns: 1fr;
 
-    gap: 28px;
+    gap: 0;
+
+    margin-top: 26px;
   }
 
   .weather-reference__item {
@@ -1319,10 +1355,27 @@ p {
     grid-template-columns: 34px 1fr;
 
     gap: 14px;
+
+    margin-bottom: 22px;
+    padding-bottom: 22px;
+
+    border-bottom: 1px solid var(--weather-border);
+  }
+
+  .weather-reference__item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+
+    border-bottom: 0;
   }
 
   .weather-reference__symbol {
     margin-bottom: 0;
+  }
+
+  .report-insights {
+    padding-top: 36px;
+    padding-bottom: 36px;
   }
 
   .report-insights__grid {
@@ -1340,6 +1393,8 @@ p {
     align-items: center;
 
     gap: 16px;
+
+    padding-top: 20px;
   }
 
   .report-footer__brand {
