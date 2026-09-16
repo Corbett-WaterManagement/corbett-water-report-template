@@ -12,7 +12,8 @@ const reportState = {
   siteData: null,
   quarterData: null,
   factor: "temperature",
-  selectedIndex: null
+  selectedIndex: null,
+  selectedTooltipAnchor: null
 };
 
 
@@ -45,9 +46,9 @@ const FACTORS = {
 
   et: {
     dataKey: "et",
-    title: "Usage vs. Evapotranspiration",
-    legend: "Evapotranspiration (in)",
-    summaryLabel: "evapotranspiration",
+    title: "Usage vs. ET",
+    legend: "ET (in)",
+    summaryLabel: "ET",
     unit: "in",
     decimals: 2,
     baseAxisMax: 6,
@@ -204,15 +205,31 @@ function renderReportIdentity() {
   footerProperty.textContent =
     siteData.reportDisplayName;
 
-  footerPeriod.textContent =
-    isTest
-      ? `${formattedPeriod} · TEST`
-      : formattedPeriod;
+  footerPeriod.replaceChildren();
 
-  footerPeriod.classList.toggle(
-    "is-test",
-    isTest
-  );
+  if (isTest) {
+    footerPeriod.append(
+      document.createTextNode(
+        `${formattedPeriod} · `
+      )
+    );
+
+    const footerTest =
+      document.createElement("span");
+
+    footerTest.className =
+      "report-footer__test";
+
+    footerTest.textContent =
+      "TEST";
+
+    footerPeriod.appendChild(
+      footerTest
+    );
+  } else {
+    footerPeriod.textContent =
+      formattedPeriod;
+  }
 
 
   const chartNote =
@@ -728,7 +745,21 @@ function renderChart() {
   const container =
     document.getElementById("report-chart");
 
-  hideTooltip();
+  const activeElement =
+    document.activeElement;
+
+  const focusedChartIndex =
+    activeElement &&
+    container.contains(activeElement)
+      ? activeElement.getAttribute(
+          "data-index"
+        )
+      : null;
+
+  clearTooltip();
+
+  reportState.selectedTooltipAnchor =
+    null;
 
   container.replaceChildren();
 
@@ -744,12 +775,15 @@ function renderChart() {
     window.innerWidth <= 640;
 
 
+  const measuredWidth =
+    Math.round(
+      container.getBoundingClientRect().width
+    );
+
   const width =
     Math.max(
-      300,
-      Math.round(
-        container.getBoundingClientRect().width
-      )
+      1,
+      measuredWidth
     );
 
 
@@ -759,23 +793,26 @@ function renderChart() {
 
   const margin = mobile
     ? {
-        top: 18,
-        right: 36,
+        top: 20,
+        right: 34,
         bottom: 42,
         left: 48
       }
     : {
-        top: 18,
-        right: 45,
+        top: 20,
+        right: 46,
         bottom: 47,
         left: 74
       };
 
 
   const plotWidth =
-    width -
-    margin.left -
-    margin.right;
+    Math.max(
+      1,
+      width -
+      margin.left -
+      margin.right
+    );
 
 
   const plotHeight =
@@ -853,7 +890,7 @@ function renderChart() {
     "Gallons",
     {
       x: margin.left,
-      y: 11,
+      y: 12,
       class: "chart-axis-title"
     }
   );
@@ -864,7 +901,7 @@ function renderChart() {
     config.unit,
     {
       x: plotRight,
-      y: 11,
+      y: 12,
       "text-anchor": "end",
       class: "chart-axis-title"
     }
@@ -944,8 +981,8 @@ function renderChart() {
 
   const barWidth =
     Math.min(
-      84,
-      monthBand * 0.42
+      96,
+      monthBand * 0.54
     );
 
 
@@ -1042,7 +1079,7 @@ function renderChart() {
           "TEST",
           {
             x: centerX,
-            y: plotBottom + 39,
+            y: plotBottom + 38,
             "text-anchor": "middle",
             class: "chart-test-label"
           }
@@ -1182,7 +1219,7 @@ function renderChart() {
 
       region.addEventListener(
         "pointerleave",
-        hideTooltip
+        restoreSelectedTooltip
       );
 
 
@@ -1199,7 +1236,7 @@ function renderChart() {
 
       region.addEventListener(
         "blur",
-        hideTooltip
+        restoreSelectedTooltip
       );
 
 
@@ -1209,6 +1246,37 @@ function renderChart() {
 
 
   container.appendChild(svg);
+
+
+  if (reportState.selectedIndex !== null) {
+    const selectedPoint =
+      weatherPoints[
+        reportState.selectedIndex
+      ];
+
+    if (selectedPoint) {
+      reportState.selectedTooltipAnchor = {
+        x: selectedPoint.x,
+        y: selectedPoint.y
+      };
+
+      restoreSelectedTooltip();
+    }
+  }
+
+
+  if (focusedChartIndex !== null) {
+    const focusTarget =
+      container.querySelector(
+        `[data-index="${focusedChartIndex}"]`
+      );
+
+    if (focusTarget) {
+      focusTarget.focus({
+        preventScroll: true
+      });
+    }
+  }
 }
 
 
@@ -1345,19 +1413,11 @@ function createTooltipRow(label, value) {
 }
 
 
-function showTooltip(
-  index,
-  clientX,
-  clientY
-) {
+function renderTooltipContent(index) {
   const tooltip =
     document.getElementById(
       "chart-tooltip"
     );
-
-  const shell =
-    tooltip.parentElement;
-
 
   tooltip.replaceChildren(
     buildTooltipContent(index)
@@ -1365,6 +1425,21 @@ function showTooltip(
 
   tooltip.hidden =
     false;
+
+  return tooltip;
+}
+
+
+function showTooltip(
+  index,
+  clientX,
+  clientY
+) {
+  const tooltip =
+    renderTooltipContent(index);
+
+  const shell =
+    tooltip.parentElement;
 
 
   const shellRect =
@@ -1384,9 +1459,7 @@ function showTooltipForElement(
   element
 ) {
   const tooltip =
-    document.getElementById(
-      "chart-tooltip"
-    );
+    renderTooltipContent(index);
 
   const shell =
     tooltip.parentElement;
@@ -1398,14 +1471,6 @@ function showTooltipForElement(
 
   const elementRect =
     element.getBoundingClientRect();
-
-
-  tooltip.replaceChildren(
-    buildTooltipContent(index)
-  );
-
-  tooltip.hidden =
-    false;
 
 
   const x =
@@ -1428,6 +1493,30 @@ function showTooltipForElement(
 }
 
 
+function restoreSelectedTooltip() {
+  if (
+    reportState.selectedIndex === null ||
+    !reportState.selectedTooltipAnchor
+  ) {
+    clearTooltip();
+    return;
+  }
+
+
+  const tooltip =
+    renderTooltipContent(
+      reportState.selectedIndex
+    );
+
+
+  positionTooltip(
+    tooltip,
+    reportState.selectedTooltipAnchor.x,
+    reportState.selectedTooltipAnchor.y
+  );
+}
+
+
 function positionTooltip(
   tooltip,
   x,
@@ -1440,16 +1529,18 @@ function positionTooltip(
   const shellWidth =
     shell.clientWidth;
 
+  const shellHeight =
+    shell.clientHeight;
+
 
   const tooltipWidth =
     tooltip.offsetWidth;
-
 
   const tooltipHeight =
     tooltip.offsetHeight;
 
 
-  const horizontalPadding = 8;
+  const padding = 8;
 
 
   let left =
@@ -1458,7 +1549,7 @@ function positionTooltip(
 
   if (
     left + tooltipWidth >
-    shellWidth - horizontalPadding
+    shellWidth - padding
   ) {
     left =
       x -
@@ -1469,8 +1560,13 @@ function positionTooltip(
 
   left =
     Math.max(
-      horizontalPadding,
-      left
+      padding,
+      Math.min(
+        left,
+        shellWidth -
+        tooltipWidth -
+        padding
+      )
     );
 
 
@@ -1480,10 +1576,22 @@ function positionTooltip(
     14;
 
 
-  if (top < 8) {
+  if (top < padding) {
     top =
       y + 14;
   }
+
+
+  top =
+    Math.max(
+      padding,
+      Math.min(
+        top,
+        shellHeight -
+        tooltipHeight -
+        padding
+      )
+    );
 
 
   tooltip.style.left =
@@ -1494,7 +1602,7 @@ function positionTooltip(
 }
 
 
-function hideTooltip() {
+function clearTooltip() {
   const tooltip =
     document.getElementById(
       "chart-tooltip"
@@ -1508,6 +1616,14 @@ function hideTooltip() {
     true;
 
   tooltip.replaceChildren();
+
+  tooltip.style.removeProperty(
+    "left"
+  );
+
+  tooltip.style.removeProperty(
+    "top"
+  );
 }
 
 
