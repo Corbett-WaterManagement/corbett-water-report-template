@@ -453,7 +453,7 @@ p {
 
   gap: 12px;
 
-  margin-bottom: 16px;
+  margin-bottom: 13px;
 }
 
 .monthly-card h3 {
@@ -464,21 +464,22 @@ p {
 }
 
 .monthly-card__test-badge {
-  padding: 3px 6px;
+  padding: 2px 5px;
 
   color: var(--test);
   background: var(--test-bg);
 
   border-radius: 3px;
 
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 700;
+  line-height: 1.2;
 
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
 }
 
 .monthly-card__usage {
-  margin-bottom: 17px;
+  margin-bottom: 14px;
 }
 
 .monthly-card__usage-value-row {
@@ -508,7 +509,7 @@ p {
 .monthly-card__usage-caption {
   display: block;
 
-  margin-top: 5px;
+  margin-top: 4px;
 
   color: var(--secondary);
 
@@ -518,7 +519,7 @@ p {
 .monthly-card__details {
   display: grid;
 
-  gap: 7px;
+  gap: 5px;
 }
 
 .monthly-card__detail {
@@ -526,7 +527,7 @@ p {
   align-items: baseline;
   justify-content: space-between;
 
-  gap: 12px;
+  gap: 10px;
 
   color: var(--ink);
 
@@ -534,22 +535,28 @@ p {
 }
 
 .monthly-card__detail span:first-child {
+  min-width: 0;
+
   color: var(--secondary);
 }
 
 .monthly-card__detail strong {
-  font-weight: 600;
+  flex: 0 0 auto;
+
+  font-weight: 400;
   white-space: nowrap;
 }
 
 .monthly-card__statuses {
   display: flex;
-  justify-content: space-between;
+  align-items: baseline;
+  justify-content: flex-start;
+  flex-wrap: wrap;
 
-  gap: 14px;
+  gap: 5px 18px;
 
-  margin-top: 17px;
-  padding-top: 12px;
+  margin-top: 14px;
+  padding-top: 10px;
 
   border-top: 1px solid var(--rule);
 
@@ -558,12 +565,28 @@ p {
   font-size: 13px;
 }
 
+.monthly-card__status {
+  display: inline-flex;
+  align-items: baseline;
+
+  gap: 4px;
+
+  white-space: nowrap;
+}
+
+.monthly-card__status-label {
+  color: var(--secondary);
+  font-weight: 400;
+}
+
 .monthly-card__status-value {
-  font-weight: 700;
+  color: var(--ink);
+  font-weight: 400;
 }
 
 .monthly-card__status-value.is-test {
   color: var(--test);
+  font-weight: 700;
 }
 
 
@@ -1089,6 +1112,16 @@ p {
     font-size: 28.8px;
   }
 
+  .monthly-card__detail {
+    gap: 8px;
+
+    font-size: 15px;
+  }
+
+  .monthly-card__statuses {
+    gap: 5px 14px;
+  }
+
   .chart-heading-row {
     align-items: flex-start;
     flex-direction: column;
@@ -1199,6 +1232,19 @@ p {
 
   .monthly-card__usage-value {
     font-size: 32px;
+  }
+
+  .monthly-card__detail {
+    gap: 10px;
+
+    font-size: 16px;
+  }
+
+  .monthly-card__statuses {
+    gap: 4px 14px;
+
+    margin-top: 12px;
+    padding-top: 9px;
   }
 
   .chart-section {
