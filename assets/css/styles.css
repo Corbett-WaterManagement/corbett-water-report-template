@@ -54,11 +54,13 @@ body {
   margin: 0;
   background: var(--page);
   color: var(--ink);
+
   font-family:
     Corbel,
     Aptos,
     Arial,
     sans-serif;
+
   line-height: 1.6;
 }
 
@@ -582,6 +584,27 @@ p {
   align-items: flex-end;
 }
 
+
+/* =========================================================
+   WEATHER FACTOR CONTROLS
+   ========================================================= */
+
+.factor-control-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.factor-control__label {
+  margin: 0 0 8px;
+
+  color: var(--secondary);
+
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
 .factor-control {
   display: grid;
   grid-template-columns: repeat(3, auto);
@@ -622,6 +645,11 @@ p {
   color: #ffffff;
   background: var(--heading);
 }
+
+
+/* =========================================================
+   CHART LEGEND
+   ========================================================= */
 
 .chart-legend {
   display: flex;
@@ -664,6 +692,11 @@ p {
 
   border-radius: 999px;
 }
+
+
+/* =========================================================
+   CHART
+   ========================================================= */
 
 .chart-shell {
   position: relative;
@@ -761,6 +794,11 @@ p {
   stroke-width: 3;
 }
 
+
+/* =========================================================
+   CHART TOOLTIP
+   ========================================================= */
+
 .chart-tooltip {
   position: absolute;
   z-index: 20;
@@ -812,6 +850,11 @@ p {
 
   font-size: 12px;
 }
+
+
+/* =========================================================
+   CHART SUMMARY
+   ========================================================= */
 
 .chart-summary-row {
   margin-top: 18px;
@@ -1053,6 +1096,10 @@ p {
     gap: 20px;
   }
 
+  .factor-control-wrap {
+    width: 100%;
+  }
+
   .weather-reference__grid {
     gap: 26px;
   }
@@ -1159,6 +1206,15 @@ p {
     margin-bottom: 36px;
 
     padding-top: 26px;
+  }
+
+  .factor-control-wrap {
+    width: 100%;
+  }
+
+  .factor-control__label {
+    font-size: 13px;
+    margin-bottom: 7px;
   }
 
   .factor-control {
