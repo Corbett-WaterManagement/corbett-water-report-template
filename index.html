@@ -28,6 +28,10 @@
   </a>
 
 
+  <!-- =====================================================
+       MASTHEAD
+       ===================================================== -->
+
   <header class="masthead">
 
     <div class="report-wrapper masthead__inner">
@@ -56,6 +60,10 @@
 
   <main>
 
+
+    <!-- ===================================================
+         HERO
+         =================================================== -->
 
     <section
       class="hero"
@@ -120,6 +128,10 @@
     </section>
 
 
+    <!-- ===================================================
+         MONTHLY SNAPSHOT
+         =================================================== -->
+
     <section
       class="monthly-snapshot"
       aria-labelledby="monthly-snapshot-title"
@@ -160,6 +172,10 @@
     </section>
 
 
+    <!-- ===================================================
+         INTERACTIVE CHART
+         =================================================== -->
+
     <section
       id="interactive-chart"
       class="chart-section"
@@ -184,38 +200,46 @@
           </div>
 
 
-          <div
-            class="factor-control"
-            role="group"
-            aria-label="Weather comparison factor"
-          >
+          <div class="factor-control-wrap">
 
-            <button
-              type="button"
-              class="factor-control__button is-active"
-              data-factor="temperature"
-              aria-pressed="true"
-            >
-              Temperature
-            </button>
+            <p class="factor-control__label">
+              Select a weather factor to compare with irrigation usage
+            </p>
 
-            <button
-              type="button"
-              class="factor-control__button"
-              data-factor="precipitation"
-              aria-pressed="false"
+            <div
+              class="factor-control"
+              role="group"
+              aria-label="Weather comparison factor"
             >
-              Precipitation
-            </button>
 
-            <button
-              type="button"
-              class="factor-control__button"
-              data-factor="et"
-              aria-pressed="false"
-            >
-              ET
-            </button>
+              <button
+                type="button"
+                class="factor-control__button is-active"
+                data-factor="temperature"
+                aria-pressed="true"
+              >
+                Temperature
+              </button>
+
+              <button
+                type="button"
+                class="factor-control__button"
+                data-factor="precipitation"
+                aria-pressed="false"
+              >
+                Precipitation
+              </button>
+
+              <button
+                type="button"
+                class="factor-control__button"
+                data-factor="et"
+                aria-pressed="false"
+              >
+                ET
+              </button>
+
+            </div>
 
           </div>
 
@@ -320,6 +344,10 @@
     </section>
 
 
+    <!-- ===================================================
+         WEATHER REFERENCE
+         =================================================== -->
+
     <section
       class="weather-reference"
       aria-labelledby="weather-reference-title"
@@ -419,6 +447,10 @@
     </section>
 
 
+    <!-- ===================================================
+         REPORT INSIGHTS
+         =================================================== -->
+
     <section
       class="report-insights"
       aria-labelledby="report-insights-title"
@@ -494,6 +526,10 @@
 
   </main>
 
+
+  <!-- =====================================================
+       FOOTER
+       ===================================================== -->
 
   <footer class="report-footer">
 
