@@ -134,19 +134,14 @@ function reportHasTestData() {
 
 function renderReportIdentity() {
   const siteData = reportState.siteData;
-  const quarterData = reportState.quarterData;
 
   const formattedPeriod = formatPeriod(siteData.currentPeriod);
   const isTest = reportHasTestData();
 
 
-  /* Browser title */
-
   document.title =
     `${siteData.reportDisplayName} | Corbett Water Report`;
 
-
-  /* Hero */
 
   const title =
     document.getElementById("report-title");
@@ -188,8 +183,6 @@ function renderReportIdentity() {
   }
 
 
-  /* Masthead status */
-
   const mastheadStatus =
     document.getElementById("masthead-status");
 
@@ -200,8 +193,6 @@ function renderReportIdentity() {
     mastheadStatus.hidden = true;
   }
 
-
-  /* Footer */
 
   const footerProperty =
     document.getElementById("footer-property");
@@ -223,8 +214,6 @@ function renderReportIdentity() {
     isTest
   );
 
-
-  /* Chart note */
 
   const chartNote =
     document.getElementById("chart-note");
@@ -340,8 +329,6 @@ function createMonthlyCard(month, index) {
   );
 
 
-  /* Heading */
-
   const headingRow =
     document.createElement("div");
 
@@ -371,8 +358,6 @@ function createMonthlyCard(month, index) {
     headingRow.appendChild(badge);
   }
 
-
-  /* Irrigation usage */
 
   const usage =
     document.createElement("div");
@@ -430,8 +415,6 @@ function createMonthlyCard(month, index) {
   );
 
 
-  /* Weather metrics */
-
   const details =
     document.createElement("div");
 
@@ -456,8 +439,6 @@ function createMonthlyCard(month, index) {
     )
   );
 
-
-  /* Status */
 
   const statuses =
     document.createElement("div");
@@ -816,6 +797,13 @@ function renderChart() {
     );
 
 
+  /*
+     IMPORTANT ACCESSIBILITY CHANGE:
+     The SVG is a group, not an image.
+     This keeps the individual interactive
+     month regions exposed to assistive technology.
+  */
+
   const svg =
     svgElement(
       "svg",
@@ -823,14 +811,12 @@ function renderChart() {
         viewBox: `0 0 ${width} ${height}`,
         width,
         height,
-        role: "img",
+        role: "group",
         "aria-labelledby":
           "chart-svg-title chart-svg-description"
       }
     );
 
-
-  /* Accessible title */
 
   const svgTitle =
     svgElement("title", {
@@ -849,14 +835,12 @@ function renderChart() {
     });
 
   svgDescription.textContent =
-    "Blue bars show irrigation usage. The green line shows the selected weather factor.";
+    "Blue bars show irrigation usage. The green line shows the selected weather factor. Each month is interactive.";
 
   svg.appendChild(
     svgDescription
   );
 
-
-  /* Axis headings */
 
   appendSvgText(
     svg,
@@ -880,8 +864,6 @@ function renderChart() {
     }
   );
 
-
-  /* Grid and Y axes */
 
   const gridSteps = 6;
 
@@ -938,7 +920,7 @@ function renderChart() {
       svg,
       formatWeatherValue(
         weatherValue,
-        config.decimals === 1 ? 0 : 0
+        0
       ),
       {
         x: plotRight + 10,
@@ -949,8 +931,6 @@ function renderChart() {
     );
   }
 
-
-  /* Month geometry */
 
   const monthBand =
     plotWidth / months.length;
@@ -1014,8 +994,6 @@ function renderChart() {
       svg.appendChild(bar);
 
 
-      /* Weather point coordinates */
-
       const weatherValue =
         Number(
           month[config.dataKey]
@@ -1038,8 +1016,6 @@ function renderChart() {
         selected
       });
 
-
-      /* Month label */
 
       appendSvgText(
         svg,
@@ -1070,8 +1046,6 @@ function renderChart() {
   );
 
 
-  /* Weather line */
-
   const pathData =
     weatherPoints
       .map(
@@ -1091,8 +1065,6 @@ function renderChart() {
     )
   );
 
-
-  /* Weather points */
 
   weatherPoints.forEach(
     (point) => {
@@ -1114,7 +1086,9 @@ function renderChart() {
   );
 
 
-  /* Accessible interaction regions */
+  /*
+     Accessible interactive month regions.
+  */
 
   months.forEach(
     (month, index) => {
@@ -1691,8 +1665,6 @@ function renderReport() {
 async function loadReport() {
   try {
 
-    /* Site control */
-
     const siteResponse =
       await fetch(
         "./data/index.json",
@@ -1712,8 +1684,6 @@ async function loadReport() {
     const siteData =
       await siteResponse.json();
 
-
-    /* Current quarter */
 
     const quarterPath =
       `./data/quarters/${siteData.currentPeriod}.json`;
@@ -1738,8 +1708,6 @@ async function loadReport() {
     const quarterData =
       await quarterResponse.json();
 
-
-    /* Basic validation */
 
     if (
       !Array.isArray(
