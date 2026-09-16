@@ -7,21 +7,30 @@
       "irrigationUsage": 100000,
       "avgHighTemp": 80.0,
       "precipitation": 3.0,
-      "et": 5.0
+      "et": 5.0,
+      "flowStatus": "FINAL",
+      "weatherStatus": "FINAL",
+      "statusNote": ""
     },
     {
       "month": "August",
       "irrigationUsage": 110000,
       "avgHighTemp": 82.0,
       "precipitation": 2.5,
-      "et": 5.2
+      "et": 5.2,
+      "flowStatus": "FINAL",
+      "weatherStatus": "FINAL",
+      "statusNote": ""
     },
     {
       "month": "September",
       "irrigationUsage": 90000,
       "avgHighTemp": 76.0,
       "precipitation": 3.5,
-      "et": 4.2
+      "et": 4.2,
+      "flowStatus": "TEST",
+      "weatherStatus": "TEST",
+      "statusNote": "Sample TEST data for template development."
     }
   ]
 }
