@@ -1,19 +1,224 @@
+/* =========================================================
+   CORBETT WATER REPORT TEMPLATE
+   Shared client-facing report behavior
+   ========================================================= */
+
+
+/* =========================================================
+   FORMATTING HELPERS
+   ========================================================= */
+
+function formatNumber(value) {
+  return Number(value).toLocaleString("en-US");
+}
+
+function formatDecimal(value) {
+  return Number(value).toFixed(2);
+}
+
+function formatPeriod(period) {
+  const match = /^(\d{4})-q([1-4])$/i.exec(period);
+
+  if (!match) {
+    return period;
+  }
+
+  const year = match[1];
+  const quarter = match[2];
+
+  return `Q${quarter} ${year}`;
+}
+
+
+/* =========================================================
+   MONTHLY CARD
+   ========================================================= */
+
+function createMonthlyCard(monthData) {
+  const card = document.createElement("article");
+  card.className = "monthly-card";
+
+  const monthHeading = document.createElement("h3");
+  monthHeading.textContent = monthData.month;
+
+  const usageSection = document.createElement("div");
+  usageSection.className = "monthly-card__usage";
+
+  const usageLabel = document.createElement("span");
+  usageLabel.className = "monthly-card__usage-label";
+  usageLabel.textContent = "Irrigation Usage";
+
+  const usageValue = document.createElement("span");
+  usageValue.className = "monthly-card__usage-value";
+  usageValue.textContent =
+    `${formatNumber(monthData.irrigationUsage)} gal`;
+
+  usageSection.appendChild(usageLabel);
+  usageSection.appendChild(usageValue);
+
+  const details = document.createElement("div");
+  details.className = "monthly-card__details";
+
+  const tempRow = document.createElement("div");
+  tempRow.className = "monthly-card__detail";
+
+  const tempLabel = document.createElement("span");
+  tempLabel.textContent = "Avg High";
+
+  const tempValue = document.createElement("strong");
+  tempValue.textContent =
+    `${Number(monthData.avgHighTemp).toFixed(1)}°F`;
+
+  tempRow.appendChild(tempLabel);
+  tempRow.appendChild(tempValue);
+
+  const precipitationRow = document.createElement("div");
+  precipitationRow.className = "monthly-card__detail";
+
+  const precipitationLabel = document.createElement("span");
+  precipitationLabel.textContent = "Precipitation";
+
+  const precipitationValue = document.createElement("strong");
+  precipitationValue.textContent =
+    `${formatDecimal(monthData.precipitation)} in`;
+
+  precipitationRow.appendChild(precipitationLabel);
+  precipitationRow.appendChild(precipitationValue);
+
+  const etRow = document.createElement("div");
+  etRow.className = "monthly-card__detail";
+
+  const etLabel = document.createElement("span");
+  etLabel.textContent = "ET";
+
+  const etValue = document.createElement("strong");
+  etValue.textContent =
+    `${formatDecimal(monthData.et)} in`;
+
+  etRow.appendChild(etLabel);
+  etRow.appendChild(etValue);
+
+  details.appendChild(tempRow);
+  details.appendChild(precipitationRow);
+  details.appendChild(etRow);
+
+  card.appendChild(monthHeading);
+  card.appendChild(usageSection);
+  card.appendChild(details);
+
+  return card;
+}
+
+
+/* =========================================================
+   REPORT RENDERING
+   ========================================================= */
+
+function renderReport(siteData, quarterData) {
+  const displayName =
+    document.getElementById("report-display-name");
+
+  displayName.textContent = siteData.reportDisplayName;
+
+  document.title =
+    `${siteData.reportDisplayName} | Corbett Water Report`;
+
+  const reportPeriod =
+    document.getElementById("report-period");
+
+  reportPeriod.textContent =
+    formatPeriod(siteData.currentPeriod);
+
+  const testStatus =
+    document.getElementById("test-status");
+
+  const siteIsTest =
+    String(siteData.siteStatus).toUpperCase() === "TEST";
+
+  const quarterIsTest =
+    String(quarterData.status).toUpperCase() === "TEST";
+
+  if (siteIsTest || quarterIsTest) {
+    testStatus.hidden = false;
+  } else {
+    testStatus.hidden = true;
+  }
+
+  const monthlyCards =
+    document.getElementById("monthly-cards");
+
+  monthlyCards.replaceChildren();
+
+  quarterData.months.forEach((monthData) => {
+    monthlyCards.appendChild(
+      createMonthlyCard(monthData)
+    );
+  });
+}
+
+
+/* =========================================================
+   DATA LOADING
+   ========================================================= */
+
 async function loadReport() {
   try {
-    const siteResponse = await fetch("./data/index.json");
-    const siteData = await siteResponse.json();
+    const siteResponse =
+      await fetch("./data/index.json");
 
-    console.log("Site control data:", siteData);
+    if (!siteResponse.ok) {
+      throw new Error(
+        `Unable to load data/index.json (${siteResponse.status})`
+      );
+    }
 
-    const quarterResponse = await fetch(
-      `./data/quarters/${siteData.currentPeriod}.json`
-    );
-    const quarterData = await quarterResponse.json();
+    const siteData =
+      await siteResponse.json();
 
-    console.log("Current quarter data:", quarterData);
+    const quarterPath =
+      `./data/quarters/${siteData.currentPeriod}.json`;
+
+    const quarterResponse =
+      await fetch(quarterPath);
+
+    if (!quarterResponse.ok) {
+      throw new Error(
+        `Unable to load ${quarterPath} (${quarterResponse.status})`
+      );
+    }
+
+    const quarterData =
+      await quarterResponse.json();
+
+    renderReport(siteData, quarterData);
+
   } catch (error) {
-    console.error("Unable to load report data:", error);
+    console.error(
+      "Unable to load Corbett Water Report:",
+      error
+    );
+
+    const displayName =
+      document.getElementById("report-display-name");
+
+    if (displayName) {
+      displayName.textContent =
+        "Report unavailable";
+    }
+
+    const monthlyCards =
+      document.getElementById("monthly-cards");
+
+    if (monthlyCards) {
+      monthlyCards.textContent =
+        "Report data could not be loaded.";
+    }
   }
 }
+
+
+/* =========================================================
+   INITIALIZE
+   ========================================================= */
 
 loadReport();
