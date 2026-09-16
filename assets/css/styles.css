@@ -379,7 +379,7 @@ p {
 
   color: var(--secondary);
 
-  font-size: 14px;
+  font-size: 15px;
   text-align: right;
 }
 
@@ -389,7 +389,7 @@ p {
    ========================================================= */
 
 .monthly-snapshot {
-  padding-top: 34px;
+  padding-top: 0;
   padding-bottom: 0;
 
   background: #ffffff;
