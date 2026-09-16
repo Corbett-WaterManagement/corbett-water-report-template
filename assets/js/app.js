@@ -263,12 +263,18 @@ function createStatusBlock(label, status) {
   const wrapper =
     document.createElement("span");
 
+  wrapper.className =
+    "monthly-card__status";
+
 
   const labelElement =
     document.createElement("span");
 
+  labelElement.className =
+    "monthly-card__status-label";
+
   labelElement.textContent =
-    `${label} `;
+    `${label}:`;
 
 
   const statusElement =
