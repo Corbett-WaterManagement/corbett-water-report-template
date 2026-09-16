@@ -4,12 +4,177 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./assets/css/styles.css">
-  <title>Corbett Water Report Template</title>
+  <title>Corbett Water Report</title>
 </head>
+
 <body>
-  <h1>Corbett Water Report Template</h1>
-  <p>Architecture smoke test.</p>
+
+  <header class="report-header">
+    <div class="report-header__inner">
+      <div class="report-brand">
+        <span class="report-brand__corbett">Corbett</span>
+        <span class="report-brand__divider"></span>
+        <span class="report-brand__service">Smart Water Management</span>
+      </div>
+
+      <div class="report-period">
+        <span class="report-period__label">Reporting Period</span>
+        <span id="report-period">Loading...</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <section class="hero">
+      <div class="container">
+        <p class="eyebrow">SMART WATER MANAGEMENT</p>
+
+        <h1 id="report-display-name">
+          Loading report...
+        </h1>
+
+        <p class="hero__description">
+          Irrigation usage and weather conditions for the current reporting period.
+        </p>
+
+        <div id="test-status" class="status-badge" hidden>
+          TEST REPORT
+        </div>
+      </div>
+    </section>
+
+    <section class="monthly-snapshot">
+      <div class="container">
+
+        <div class="section-heading">
+          <p class="eyebrow">MONTHLY SNAPSHOT</p>
+          <h2>Water use at a glance</h2>
+        </div>
+
+        <div id="monthly-cards" class="monthly-grid">
+          <!-- Monthly cards populated by app.js -->
+        </div>
+
+      </div>
+    </section>
+
+    <section class="usage-comparison">
+      <div class="container">
+
+        <div class="section-heading">
+          <p class="eyebrow">IRRIGATION &amp; WEATHER</p>
+          <h2>Understanding water use</h2>
+
+          <p class="section-description">
+            Select a weather factor above to compare it with irrigation usage.
+          </p>
+        </div>
+
+        <div class="chart-controls">
+          <button type="button" data-factor="temperature">
+            Temperature
+          </button>
+
+          <button type="button" data-factor="precipitation">
+            Precipitation
+          </button>
+
+          <button type="button" data-factor="et">
+            ET
+          </button>
+        </div>
+
+        <div class="chart-container">
+          <div id="report-chart">
+            Chart loading...
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="weather-reference">
+      <div class="container">
+
+        <div class="section-heading">
+          <p class="eyebrow">WEATHER REFERENCE</p>
+          <h2>Factors that influence irrigation demand</h2>
+        </div>
+
+        <div class="reference-grid">
+
+          <article class="reference-card">
+            <h3>Average High Temperature</h3>
+            <p>
+              Higher temperatures increase plant and soil water loss, often raising irrigation demand.
+            </p>
+          </article>
+
+          <article class="reference-card">
+            <h3>Evapotranspiration</h3>
+            <p>
+              Measures estimated water loss from soil and plants; higher ET generally means more water is needed.
+            </p>
+          </article>
+
+          <article class="reference-card">
+            <h3>Precipitation</h3>
+            <p>
+              Rainfall reduces the amount of supplemental irrigation required, depending on timing and intensity.
+            </p>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section class="report-insights">
+      <div class="container">
+
+        <div class="section-heading">
+          <p class="eyebrow">REPORT INSIGHTS</p>
+          <h2>A broader view of water use</h2>
+        </div>
+
+        <div class="insights-grid">
+
+          <article class="insight-card">
+            <h3>Factors Influencing Water Use</h3>
+            <p>
+              Irrigation demand changes with weather conditions, landscape needs, and system operation.
+            </p>
+          </article>
+
+          <article class="insight-card">
+            <h3>Understanding Seasonal Trends</h3>
+            <p>
+              Reviewing irrigation alongside weather conditions provides useful context for changes in water use.
+            </p>
+          </article>
+
+          <article class="insight-card">
+            <h3>Continued Monitoring</h3>
+            <p>
+              Ongoing reporting helps identify developing trends and provides a consistent view of system performance.
+            </p>
+          </article>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="report-footer">
+    <div class="container">
+      <p>Corbett Smart Water Management</p>
+    </div>
+  </footer>
 
   <script src="./assets/js/app.js"></script>
+
 </body>
 </html>
