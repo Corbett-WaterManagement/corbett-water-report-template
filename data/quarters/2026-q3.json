@@ -1,0 +1,27 @@
+{
+  "period": "2026-q3",
+  "status": "TEST",
+  "months": [
+    {
+      "month": "July",
+      "irrigationUsage": 100000,
+      "avgHighTemp": 80.0,
+      "precipitation": 3.0,
+      "et": 5.0
+    },
+    {
+      "month": "August",
+      "irrigationUsage": 110000,
+      "avgHighTemp": 82.0,
+      "precipitation": 2.5,
+      "et": 5.2
+    },
+    {
+      "month": "September",
+      "irrigationUsage": 90000,
+      "avgHighTemp": 76.0,
+      "precipitation": 3.5,
+      "et": 4.2
+    }
+  ]
+}
