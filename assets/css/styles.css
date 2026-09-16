@@ -1,3 +1,556 @@
-/* Corbett Water Report Template
-   Shared client-facing report styles.
-*/
+/* =========================================================
+   CORBETT WATER REPORT TEMPLATE
+   Shared client-facing report styles
+   ========================================================= */
+
+:root {
+  --page-bg: #f6f8f9;
+  --surface: #ffffff;
+  --surface-soft: #eef3f5;
+
+  --text-primary: #202a30;
+  --text-secondary: #64727b;
+  --text-light: #ffffff;
+
+  --corbett-blue: #2475a9;
+  --smart-water-green: #4b925e;
+
+  --border: #dce4e8;
+
+  --shadow-soft: 0 12px 30px rgba(25, 42, 52, 0.07);
+
+  --radius-small: 10px;
+  --radius-medium: 18px;
+  --radius-large: 28px;
+
+  --container-width: 1180px;
+}
+
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--page-bg);
+  color: var(--text-primary);
+  font-family:
+    Inter,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  line-height: 1.6;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   GLOBAL LAYOUT
+   ========================================================= */
+
+.container {
+  width: min(calc(100% - 48px), var(--container-width));
+  margin: 0 auto;
+}
+
+section {
+  padding: 88px 0;
+}
+
+.eyebrow {
+  margin: 0 0 14px;
+  color: var(--corbett-blue);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.section-heading {
+  max-width: 760px;
+  margin-bottom: 38px;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.04em;
+}
+
+.section-description {
+  max-width: 680px;
+  margin: 18px 0 0;
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+
+/* =========================================================
+   REPORT HEADER
+   ========================================================= */
+
+.report-header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.report-header__inner {
+  width: min(calc(100% - 48px), var(--container-width));
+  min-height: 78px;
+  margin: 0 auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+.report-brand {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.report-brand__corbett {
+  color: var(--corbett-blue);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.report-brand__divider {
+  width: 1px;
+  height: 24px;
+  background: var(--border);
+}
+
+.report-brand__service {
+  color: var(--smart-water-green);
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.report-period {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.3;
+}
+
+.report-period__label {
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#report-period {
+  margin-top: 3px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
+
+.hero {
+  padding: 110px 0 100px;
+  background:
+    linear-gradient(
+      135deg,
+      rgba(36, 117, 169, 0.07),
+      rgba(75, 146, 94, 0.05)
+    );
+}
+
+.hero h1 {
+  max-width: 900px;
+  margin: 0;
+  font-size: clamp(3rem, 7vw, 5.8rem);
+  line-height: 0.98;
+  letter-spacing: -0.055em;
+}
+
+.hero__description {
+  max-width: 680px;
+  margin: 28px 0 0;
+  color: var(--text-secondary);
+  font-size: clamp(1.05rem, 2vw, 1.25rem);
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 30px;
+  padding: 8px 13px;
+
+  border: 1px solid #d7a543;
+  border-radius: 999px;
+
+  background: #fff6df;
+  color: #765515;
+
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+
+/* =========================================================
+   MONTHLY SNAPSHOT
+   ========================================================= */
+
+.monthly-snapshot {
+  background: var(--surface);
+}
+
+.monthly-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.monthly-card {
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-medium);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.monthly-card h3 {
+  margin: 0 0 22px;
+  font-size: 1.35rem;
+}
+
+.monthly-card__usage {
+  margin-bottom: 24px;
+}
+
+.monthly-card__usage-label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.monthly-card__usage-value {
+  display: block;
+  color: var(--corbett-blue);
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.monthly-card__details {
+  display: grid;
+  gap: 10px;
+}
+
+.monthly-card__detail {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.monthly-card__detail strong {
+  color: var(--text-primary);
+}
+
+
+/* =========================================================
+   USAGE COMPARISON
+   ========================================================= */
+
+.usage-comparison {
+  background: var(--page-bg);
+}
+
+.chart-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.chart-controls button {
+  padding: 11px 18px;
+
+  border: 1px solid var(--border);
+  border-radius: 999px;
+
+  background: var(--surface);
+  color: var(--text-primary);
+
+  font-weight: 700;
+
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease;
+}
+
+.chart-controls button:hover,
+.chart-controls button.is-active {
+  border-color: var(--corbett-blue);
+  background: var(--corbett-blue);
+  color: var(--text-light);
+}
+
+.chart-container {
+  min-height: 430px;
+  padding: 32px;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius-large);
+
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+#report-chart {
+  min-height: 360px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--text-secondary);
+}
+
+
+/* =========================================================
+   WEATHER REFERENCE
+   ========================================================= */
+
+.weather-reference {
+  background: var(--surface);
+}
+
+.reference-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.reference-card {
+  padding: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-medium);
+  background: var(--surface-soft);
+}
+
+.reference-card h3 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+}
+
+.reference-card p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+
+/* =========================================================
+   REPORT INSIGHTS
+   ========================================================= */
+
+.report-insights {
+  background: var(--page-bg);
+}
+
+.insights-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.insight-card {
+  padding: 30px;
+  border-radius: var(--radius-medium);
+  background: var(--surface);
+  box-shadow: var(--shadow-soft);
+}
+
+.insight-card h3 {
+  margin: 0 0 12px;
+  font-size: 1.15rem;
+}
+
+.insight-card p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+.report-footer {
+  padding: 34px 0;
+  background: var(--text-primary);
+  color: var(--text-light);
+}
+
+.report-footer p {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  section {
+    padding: 72px 0;
+  }
+
+  .monthly-grid,
+  .reference-grid,
+  .insights-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .hero {
+    padding: 90px 0 82px;
+  }
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+  .container {
+    width: min(calc(100% - 32px), var(--container-width));
+  }
+
+  section {
+    padding: 58px 0;
+  }
+
+  .report-header__inner {
+    width: min(calc(100% - 32px), var(--container-width));
+    padding: 16px 0;
+
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .report-brand {
+    gap: 10px;
+  }
+
+  .report-brand__corbett {
+    font-size: 1.1rem;
+  }
+
+  .report-brand__service {
+    font-size: 0.78rem;
+  }
+
+  .report-period {
+    align-items: flex-start;
+  }
+
+  .hero {
+    padding: 72px 0 64px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.7rem, 14vw, 4.4rem);
+  }
+
+  .section-heading {
+    margin-bottom: 28px;
+  }
+
+  .section-heading h2 {
+    font-size: 2.2rem;
+  }
+
+  .monthly-card,
+  .reference-card,
+  .insight-card {
+    padding: 22px;
+  }
+
+  .chart-container {
+    min-height: 340px;
+    padding: 20px;
+  }
+
+  #report-chart {
+    min-height: 300px;
+  }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   Explicit support for 320–430px layouts
+   ========================================================= */
+
+@media (max-width: 430px) {
+
+  .hero h1,
+  .section-heading h2,
+  .reference-card h3,
+  .insight-card h3 {
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  .chart-controls {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .chart-controls button {
+    width: 100%;
+  }
+}
