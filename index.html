@@ -49,8 +49,8 @@
       <div
         id="masthead-status"
         class="masthead__status"
+        hidden
       >
-        EXPERIMENTAL · TEST
       </div>
 
     </div>
@@ -89,21 +89,22 @@
             id="report-location"
             class="hero__location"
           >
-            Loading location...
+            
           </p>
 
           <p
             id="report-description"
             class="hero__description"
           >
-            Water use and weather, month by month.
+            Loading report data...
           </p>
 
           <p
             id="report-test-note"
             class="hero__test-note"
+            hidden
           >
-            TEST report.
+            
           </p>
 
         </div>
@@ -149,7 +150,7 @@
 
           </div>
 
-          <p class="section-instruction">
+          <p class="section-instruction" hidden>
             Select a month to highlight it in the chart.
           </p>
 
@@ -190,7 +191,7 @@
             </p>
 
             <h2 id="chart-title">
-              Usage vs. Average High Temp
+              Irrigation and weather
             </h2>
 
           </div>
@@ -212,6 +213,7 @@
                 type="button"
                 class="factor-control__button is-active"
                 data-factor="temperature"
+                disabled
                 aria-pressed="true"
               >
                 Temperature
@@ -221,6 +223,7 @@
                 type="button"
                 class="factor-control__button"
                 data-factor="precipitation"
+                disabled
                 aria-pressed="false"
               >
                 Precipitation
@@ -230,6 +233,7 @@
                 type="button"
                 class="factor-control__button"
                 data-factor="et"
+                disabled
                 aria-pressed="false"
               >
                 ET
@@ -269,7 +273,7 @@
             ></span>
 
             <span id="weather-legend-label">
-              Average high temperature (°F)
+              
             </span>
 
           </div>
@@ -285,6 +289,7 @@
             role="group"
             aria-label="Interactive irrigation usage and weather comparison chart. Select a month for details."
           >
+            Loading chart data...
           </div>
 
 
@@ -305,7 +310,7 @@
             class="chart-summary"
             aria-live="polite"
           >
-            All three months shown. Select a card or chart point for details.
+            Loading chart data...
           </p>
 
           <button
@@ -324,7 +329,7 @@
           id="chart-note"
           class="chart-note"
         >
-          The left and right axes use different units.
+          
         </p>
 
 
@@ -548,14 +553,14 @@
           id="footer-property"
           class="report-footer__property"
         >
-          Sample Property
+          
         </div>
 
         <div
           id="footer-period"
           class="report-footer__period"
         >
-          Q3 2026 · TEST
+          
         </div>
 
       </div>
