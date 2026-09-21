@@ -112,6 +112,15 @@ function monthHasTestData(month) {
 }
 
 
+function hasReportData() {
+  return (
+    reportState.siteData !== null &&
+    Array.isArray(reportState.quarterData?.months) &&
+    reportState.quarterData.months.length > 0
+  );
+}
+
+
 function reportHasTestData() {
   if (!reportState.siteData || !reportState.quarterData) {
     return false;
@@ -534,6 +543,11 @@ function toggleMonthSelection(index) {
 
 
 function setSelectedMonth(index) {
+  if (!hasReportData()) {
+    return;
+  }
+
+
   reportState.selectedIndex =
     index;
 
@@ -586,7 +600,7 @@ function setupFactorControls() {
         const factor =
           button.dataset.factor;
 
-        if (!FACTORS[factor]) {
+        if (!hasReportData() || !FACTORS[factor]) {
           return;
         }
 
@@ -742,6 +756,10 @@ function appendSvgText(
    ========================================================= */
 
 function renderChart() {
+  if (!hasReportData()) {
+    return;
+  }
+
   const container =
     document.getElementById("report-chart");
 
@@ -1632,6 +1650,10 @@ function clearTooltip() {
    ========================================================= */
 
 function updateChartSummary() {
+  if (!hasReportData()) {
+    return;
+  }
+
   const summary =
     document.getElementById(
       "chart-summary"
@@ -1665,7 +1687,7 @@ function updateChartSummary() {
 
 
   summary.textContent =
-    `${month.month}: ${formatNumber(month.irrigationUsage)} gal irrigation · ${config.summaryLabel} ${formatWeatherValue(month[config.dataKey], config.decimals)} ${config.unit}.`;
+    `${month.month}: ${formatNumber(month.irrigationUsage)} gal irrigation · ${config.summaryLabel} ${formatWeatherValue(month[config.dataKey], config.decimals)} ${config.unit}.${monthHasTestData(month) ? " This month contains TEST data." : ""}`;
 
 
   clearButton.hidden =
@@ -1678,6 +1700,10 @@ function updateChartSummary() {
    ========================================================= */
 
 function updateLiveRegion() {
+  if (!hasReportData()) {
+    return;
+  }
+
   const region =
     document.getElementById(
       "chart-live-region"
@@ -1703,7 +1729,7 @@ function updateLiveRegion() {
 
 
   region.textContent =
-    `${month.month} selected. ${formatNumber(month.irrigationUsage)} gallons irrigation. ${config.summaryLabel} ${formatWeatherValue(month[config.dataKey], config.decimals)} ${config.unit}.`;
+    `${month.month} selected. ${formatNumber(month.irrigationUsage)} gallons irrigation. ${config.summaryLabel} ${formatWeatherValue(month[config.dataKey], config.decimals)} ${config.unit}.${monthHasTestData(month) ? " This month contains TEST data." : ""}`;
 }
 
 
@@ -1777,6 +1803,11 @@ function renderReport() {
   updateCardSelection();
 
   updateLiveRegion();
+
+  document.querySelectorAll(".factor-control__button").forEach((button) => {
+    button.disabled = false;
+  });
+  document.querySelector(".section-instruction").hidden = false;
 }
 
 
@@ -1784,7 +1815,164 @@ function renderReport() {
    DATA LOADING
    ========================================================= */
 
+function renderUnavailableReport(isError) {
+  // Clear both data and presentation so a failed reload cannot retain a report.
+  reportState.siteData = null;
+  reportState.quarterData = null;
+  reportState.selectedIndex = null;
+  reportState.selectedTooltipAnchor = null;
+  clearTooltip();
+
+  document.title = "Corbett Water Report";
+  document.getElementById("report-title").textContent =
+    isError ? "Report unavailable" : "Loading report...";
+  document.getElementById("report-description").textContent =
+    isError ? "Report data could not be loaded." : "Loading report data...";
+  document.getElementById("report-eyebrow").textContent =
+    "QUARTERLY IRRIGATION REPORT";
+
+  ["report-location", "footer-property", "footer-period", "chart-note",
+    "weather-legend-label"].forEach((id) => {
+    document.getElementById(id).textContent = "";
+  });
+  ["masthead-status", "report-test-note"].forEach((id) => {
+    const element = document.getElementById(id);
+    element.textContent = "";
+    element.hidden = true;
+  });
+
+  const cards = document.getElementById("monthly-cards");
+  cards.replaceChildren();
+  const message = document.createElement("p");
+  message.textContent = isError
+    ? "Monthly report data is unavailable."
+    : "Loading monthly report data...";
+  cards.appendChild(message);
+
+  const chartMessage = isError
+    ? "Chart data is unavailable."
+    : "Loading chart data...";
+  document.getElementById("report-chart").textContent = chartMessage;
+  document.getElementById("chart-summary").textContent = chartMessage;
+  document.getElementById("chart-live-region").textContent =
+    isError ? "Report data could not be loaded." : "Loading report data...";
+  document.getElementById("chart-title").textContent = "Irrigation and weather";
+  document.getElementById("clear-selection").hidden = true;
+  document.querySelector(".section-instruction").hidden = true;
+  document.querySelectorAll(".factor-control__button").forEach((button) => {
+    button.disabled = true;
+  });
+}
+
+
+/* Validate without coercing, defaulting, or changing source values. */
+function requireCanonicalFields(value, fields, label) {
+  if (
+    value === null || typeof value !== "object" || Array.isArray(value) ||
+    Object.keys(value).length !== fields.length ||
+    !fields.every((field) => Object.prototype.hasOwnProperty.call(value, field))
+  ) {
+    throw new Error(`${label} does not match the canonical schema.`);
+  }
+}
+
+
+function isCanonicalPeriod(value) {
+  return typeof value === "string" && /^\d{4}-q[1-4]$/.test(value);
+}
+
+
+function isCanonicalStatus(value) {
+  return value === "TEST" || value === "FINAL";
+}
+
+
+function validateSiteData(siteData) {
+  requireCanonicalFields(siteData, [
+    "reportDisplayName", "location", "reportDescription", "siteStatus",
+    "testNote", "currentPeriod", "availableQuarters", "availableAnnualReports"
+  ], "Site data");
+
+  for (const field of ["reportDisplayName", "location"]) {
+    const value = siteData[field];
+    if (
+      typeof value !== "string" || value.trim() === "" ||
+      /^(undefined|null)$/i.test(value.trim())
+    ) {
+      throw new Error(`Site data requires a valid ${field}.`);
+    }
+  }
+
+  if (
+    siteData.reportDescription !== "Quarterly irrigation usage and weather conditions." ||
+    !isCanonicalStatus(siteData.siteStatus) ||
+    siteData.testNote !== (siteData.siteStatus === "TEST"
+      ? "TEST data is included in this report." : "") ||
+    !isCanonicalPeriod(siteData.currentPeriod)
+  ) {
+    throw new Error("Site description, status, note, or period is invalid.");
+  }
+
+  const quarters = siteData.availableQuarters;
+  if (
+    !Array.isArray(quarters) || !quarters.every(isCanonicalPeriod) ||
+    new Set(quarters).size !== quarters.length ||
+    !quarters.includes(siteData.currentPeriod) ||
+    !Array.isArray(siteData.availableAnnualReports) ||
+    siteData.availableAnnualReports.length !== 0
+  ) {
+    throw new Error("Site reporting-history metadata is invalid.");
+  }
+}
+
+
+function validateQuarterData(quarterData, currentPeriod) {
+  requireCanonicalFields(quarterData, ["period", "status", "months"], "Quarter data");
+  if (
+    quarterData.period !== currentPeriod || !isCanonicalStatus(quarterData.status) ||
+    !Array.isArray(quarterData.months) || quarterData.months.length !== 3
+  ) {
+    throw new Error("Quarter period, status, or month count is invalid.");
+  }
+
+  const requiredMonths = [
+    ["January", "February", "March"],
+    ["April", "May", "June"],
+    ["July", "August", "September"],
+    ["October", "November", "December"]
+  ][Number(currentPeriod.slice(-1)) - 1];
+  const seenMonths = new Set();
+
+  for (const month of quarterData.months) {
+    requireCanonicalFields(month, [
+      "month", "irrigationUsage", "avgHighTemp", "precipitation", "et",
+      "flowStatus", "weatherStatus", "statusNote"
+    ], "Month data");
+
+    if (!requiredMonths.includes(month.month) || seenMonths.has(month.month)) {
+      throw new Error("Quarter contains an invalid or duplicate month.");
+    }
+    seenMonths.add(month.month);
+
+    for (const field of ["irrigationUsage", "avgHighTemp", "precipitation", "et"]) {
+      if (typeof month[field] !== "number" || !Number.isFinite(month[field])) {
+        throw new Error(`Month data requires a finite JSON number for ${field}.`);
+      }
+    }
+
+    if (
+      !isCanonicalStatus(month.flowStatus) || !isCanonicalStatus(month.weatherStatus) ||
+      typeof month.statusNote !== "string"
+    ) {
+      throw new Error("Month source statuses or status note are invalid.");
+    }
+  }
+}
+
+
 async function loadReport() {
+  renderUnavailableReport(false);
+
   try {
 
     const siteResponse =
@@ -1805,6 +1993,8 @@ async function loadReport() {
 
     const siteData =
       await siteResponse.json();
+
+    validateSiteData(siteData);
 
 
     const quarterPath =
@@ -1831,16 +2021,7 @@ async function loadReport() {
       await quarterResponse.json();
 
 
-    if (
-      !Array.isArray(
-        quarterData.months
-      ) ||
-      quarterData.months.length === 0
-    ) {
-      throw new Error(
-        "Quarter data does not contain monthly reporting data."
-      );
-    }
+    validateQuarterData(quarterData, siteData.currentPeriod);
 
 
     reportState.siteData =
@@ -1860,61 +2041,7 @@ async function loadReport() {
     );
 
 
-    const reportTitle =
-      document.getElementById(
-        "report-title"
-      );
-
-
-    if (reportTitle) {
-      reportTitle.textContent =
-        "Report unavailable";
-    }
-
-
-    const description =
-      document.getElementById(
-        "report-description"
-      );
-
-
-    if (description) {
-      description.textContent =
-        "Report data could not be loaded.";
-    }
-
-
-    const cards =
-      document.getElementById(
-        "monthly-cards"
-      );
-
-
-    if (cards) {
-      cards.replaceChildren();
-
-      const message =
-        document.createElement("p");
-
-      message.textContent =
-        "Monthly report data is unavailable.";
-
-      cards.appendChild(
-        message
-      );
-    }
-
-
-    const chart =
-      document.getElementById(
-        "report-chart"
-      );
-
-
-    if (chart) {
-      chart.textContent =
-        "Chart data is unavailable.";
-    }
+    renderUnavailableReport(true);
   }
 }
 
