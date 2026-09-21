@@ -3,7 +3,7 @@
   "location": "Sample Location",
   "reportDescription": "Quarterly irrigation usage and weather conditions.",
   "siteStatus": "TEST",
-  "testNote": "Sample test data for template development only.",
+  "testNote": "TEST data is included in this report.",
   "currentPeriod": "2026-q3",
   "availableQuarters": [
     "2026-q3"
