@@ -2,16 +2,20 @@
 
 Master template repository for Corbett Management Reports client-facing water report websites.
 
+Current template state: **DEVELOPMENT — UNDER REFINEMENT**.
+
+Production approval has not been granted.
+
 ## Purpose
 
-This repository is the approved reusable blueprint for standalone account report websites.
+This repository is the reusable blueprint under development for standalone account report websites.
 
 It contains:
 - standard HTML structure
 - shared CSS
 - shared JavaScript
-- approved branding assets
-- approved report behavior
+- Corbett branding assets
+- shared report behavior
 - sample/test data only
 
 ## Important
