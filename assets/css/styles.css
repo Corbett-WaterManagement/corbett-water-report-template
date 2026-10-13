@@ -1455,3 +1455,87 @@ p {
   }
 
 }
+
+
+/* =========================================================
+   CORBETT IDENTITY AND REPORT CONTEXT
+   Water data/control tokens above remain unchanged.
+   ========================================================= */
+
+:root {
+  --corbett-maroon: #AA1D37;
+  --corbett-black: #040707;
+  --corbett-muted: #5A5A5A;
+  --corbett-rule: #DADADA;
+}
+
+#report-title,
+.hero .eyebrow,
+#report-insights-title,
+.report-insights__heading .eyebrow,
+.report-footer__property {
+  color: var(--corbett-maroon);
+}
+
+.hero__location,
+.hero__description,
+#monthly-snapshot-title,
+.report-insight h3,
+.report-footer__period {
+  color: var(--corbett-black);
+}
+
+.report-insight p {
+  color: var(--corbett-muted);
+}
+
+.report-footer__inner {
+  border-top-color: var(--corbett-rule);
+}
+
+.report-footer__notices {
+  margin-top: 18px;
+  color: var(--corbett-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.report-footer__disclaimers {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.report-footer__notice-card {
+  min-width: 0;
+  padding: 18px 20px;
+  background: #FAF8F8;
+  border: 1px solid #E8DFE1;
+  border-top: 2px solid var(--corbett-maroon);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(4, 7, 7, 0.035);
+}
+
+.report-footer__notice-title {
+  margin-bottom: 9px;
+  color: var(--corbett-maroon);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0.035em;
+}
+
+.report-footer__notice-card p {
+  margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .report-footer__disclaimers {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .report-footer__notice-card {
+    padding: 16px 18px;
+  }
+}
